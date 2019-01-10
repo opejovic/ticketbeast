@@ -13,11 +13,11 @@ class ViewConcertListingTest extends TestCase
 	use RefreshDatabase;
 
 	/** @test */
-	function user_can_view_concert_listing()
+	function user_can_view_published_concert_listing()
 	{
 		$this->withoutExceptionHandling();
 
-	    $concert = factory(Concert::class)->create([
+	    $concert = factory(Concert::class)->states('published')->create([
 	    	'title' => 'The Red Chord',
 	    	'subtitle' => 'with Animosity and Lethargy',
 	    	'date' => Carbon::parse('December 13, 2019 8:00pm'),
@@ -42,5 +42,13 @@ class ViewConcertListingTest extends TestCase
 	    $response->assertSee('Laraville');
 	    $response->assertSee('ON 17196');
 	    $response->assertSee('For tickets, call (555) 555-5555.');
+	}
+
+	/** @test */
+	function user_cannot_view_unpublished_concert_listing()
+	{
+	    $concert = factory(Concert::class)->states('unpublished')->create();
+
+	    $this->get(route('concerts.show', $concert->id))->assertStatus(404);
 	}
 }

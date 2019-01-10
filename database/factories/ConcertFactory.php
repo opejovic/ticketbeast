@@ -7,7 +7,7 @@ $factory->define(App\Models\Concert::class, function (Faker $faker) {
     return [
         'title' => 'The Fake Band Name',
     	'subtitle' => 'with The Fake Openers',
-    	'date' => Carbon::parse('December 14, 2019 8:00pm'),
+    	'date' => Carbon::parse('+4 weeks'),
     	'ticket_price' => 2000,
     	'venue' => 'The Fake Venue',
     	'venue_address' => '123 Example Lane',
@@ -17,3 +17,11 @@ $factory->define(App\Models\Concert::class, function (Faker $faker) {
     	'additional_information' => 'Some sample additional information.',    
     ];
 });
+
+$factory->state(App\Models\Concert::class, 'published', [
+    'published_at' => Carbon::parse('-1 week'),
+]);
+
+$factory->state(App\Models\Concert::class, 'unpublished', [
+    'published_at' => null,
+]);
