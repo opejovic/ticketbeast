@@ -36,7 +36,7 @@ class ViewConcertListingTest extends TestCase
 	    $response->assertSee('with Animosity and Lethargy');
 	    $response->assertSee('December 13, 2019');
 	    $response->assertSee('8:00pm');
-	    $response->assertSee('$32.50');
+	    $response->assertSee('32.50');
 	    $response->assertSee('The Mosh Pit');
 	    $response->assertSee('123 Example Lane');
 	    $response->assertSee('Laraville');
