@@ -56,7 +56,6 @@ class PurchaseTicketsTest extends TestCase
 	    $response->assertStatus(404);
 	    $this->assertEquals(0, $concert->orders()->count());
 	    $this->assertEquals(0, $this->paymentGateway->totalCharges());
-
 	}
 
 	/** @test */
