@@ -54,8 +54,7 @@ class ConcertTest extends TestCase
 	/** @test */
 	function can_order_concert_tickets()
 	{
-	    $concert = factory(Concert::class)->create();
-	    $concert->addTickets(3);
+	    $concert = factory(Concert::class)->create()->addTickets(3);
 
 	    $order = $concert->orderTickets('jane@example.com', 3);
 
@@ -76,8 +75,7 @@ class ConcertTest extends TestCase
 	/** @test */
 	function tickets_remaining_does_not_include_tickets_associated_with_an_order()
 	{
-	    $concert = factory(Concert::class)->create();
-	    $concert->addTickets(10);
+	    $concert = factory(Concert::class)->create()->addTickets(10);
 
 	    $concert->orderTickets('jane@example.com', 8);
 
@@ -87,8 +85,7 @@ class ConcertTest extends TestCase
 	/** @test */
 	function trying_to_purchase_more_tickets_than_remain_throws_an_Exception()
 	{
-	    $concert = factory(Concert::class)->create();
-	    $concert->addTickets(10);
+	    $concert = factory(Concert::class)->create()->addTickets(10);
 
 	    try {
 			$concert->orderTickets('jane@example.com', '11');
@@ -105,8 +102,7 @@ class ConcertTest extends TestCase
 	/** @test */
 	function cannot_order_tickets_that_have_already_been_purchased()
 	{
-	    $concert = factory(Concert::class)->create();
-	    $concert->addTickets(10);
+	    $concert = factory(Concert::class)->create()->addTickets(10);
 	    $concert->orderTickets('jane@example.com', 8);
 
 	    try {
