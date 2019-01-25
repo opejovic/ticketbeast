@@ -30,10 +30,17 @@ class PurchaseTicketsTest extends TestCase
 	{
 	    $concert = factory(Concert::class)->states('published')->create(['ticket_price' => 3000])->addTickets(3);
 
-	    $this->orderTickets($concert, [
+	    $response = $this->orderTickets($concert, [
 	    	'email' => 'john@example.com',
 	    	'ticket_quantity' => 3,
 	    	'payment_token' => $this->paymentGateway->getValidTestToken(),
+	    ]);
+
+	    $response->assertStatus(201);
+	    $response->assertJson([
+	    	'email' => 'john@example.com',
+	    	'ticket_quantity' => 3,
+	    	'amount' => 9000,
 	    ]);
 
 	    $this->assertEquals(9000, $this->paymentGateway->totalCharges());
