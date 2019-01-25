@@ -28,6 +28,10 @@ class ConcertOrdersController extends Controller
 		]);
 
 		try {
+			// Find tickets
+			// Charge customer
+			// Create order
+
 			$order = $concert->orderTickets(request('email'), request('ticket_quantity'));
 			$this->paymentGateway->charge(request('ticket_quantity') * $concert->ticket_price, request('payment_token'));
 			
