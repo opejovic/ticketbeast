@@ -139,6 +139,7 @@ class PurchaseTicketsTest extends TestCase
 	    $this->assertEquals(0, $this->paymentGateway->totalCharges());
 	    $order = $concert->orders()->where('email', 'john@example.com')->first();
 	    $this->assertNull($order);
+	    $this->assertEquals(3, $concert->ticketsRemaining());
 	}
 
 	/** @test */
