@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Exceptions\NotEnoughTicketsException;
+use App\Reservation;
 use Illuminate\Database\Eloquent\Model;
 
 class Concert extends Model
@@ -45,11 +46,13 @@ class Concert extends Model
         return $this->hasMany(Ticket::class);
     }
 
-    public function reserveTickets($quantity)
+    public function reserveTickets($quantity, $email)
     {
-        return $this->findTickets($quantity)->each(function ($ticket) {
+        $tickets =  $this->findTickets($quantity)->each(function ($ticket) {
             $ticket->reserve();
         });
+
+        return new Reservation($tickets, $email);
     }
 
     public function orderTickets($email, $ticketQuantity)
