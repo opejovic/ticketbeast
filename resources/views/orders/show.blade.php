@@ -44,7 +44,7 @@
                                                     {{ $ticket->concert->formattedDate }}
                                                 </time>
                                             </p>
-                                            <p class="text-dark-soft">Doors at 8:00PM</p>
+                                            <p class="text-dark-soft">Doors at {{ $ticket->concert->formattedStartTime }}</p>
                                         </div>
                                     </div>
                                 </div>

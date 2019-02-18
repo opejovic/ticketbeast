@@ -51,6 +51,11 @@ class Order extends Model
         return $this->tickets()->count();
     }
 
+    public static function findByConfirmationNumber($confirmationNumber)
+    {
+        return self::where('confirmation_number', $confirmationNumber)->firstOrFail();
+    }
+
     public function toArray()
     {
         return [
