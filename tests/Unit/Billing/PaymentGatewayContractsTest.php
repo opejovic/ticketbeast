@@ -36,22 +36,22 @@ trait PaymentGatewayContractsTest
 
 	
 	/** @test */
-	function charges_with_invalid_payment_token_fail2()
+	function charges_with_invalid_payment_token_fail()
 	{
 		$paymentGateway = $this->getPaymentGateway();
 		
-		$newCharges = $paymentGateway->newChargesDuring(function($paymentGateway) {
-			
-			try 
+		$newCharges = $paymentGateway->newChargesDuring( function ($paymentGateway) {
+
+			try { 
 		    	$paymentGateway->charge(2500, "invalid-payment-token");			
 			} catch (PaymentFailedException $e) {
 				return;
 			}
 			
 			$this->fail("Charge succeeded even though the payment token was invalid.");	    
+			
 		});
 	
     	$this->assertCount(0, $newCharges);
 	}
-
 }
