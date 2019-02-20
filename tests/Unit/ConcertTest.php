@@ -26,7 +26,7 @@ class ConcertTest extends TestCase
 	{
 	    $concert = factory(Concert::class)->make(['date' => Carbon::parse('December 14, 2019 21:00')]);
 	    
-	    $this->assertEquals('9:00pm', $concert->start_time);
+	    $this->assertEquals('9:00pm', $concert->formatted_start_time);
 	}
 
 	/** @test */

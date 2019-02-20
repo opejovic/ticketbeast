@@ -2,6 +2,8 @@
 
 namespace Tests\Unit\Billing;
 
+use App\Billing\PaymentFailedException;
+
 trait PaymentGatewayContractsTest
 {
 	abstract protected function getPaymentGateway();
@@ -51,7 +53,7 @@ trait PaymentGatewayContractsTest
 			$this->fail("Charge succeeded even though the payment token was invalid.");	    
 			
 		});
+    		$this->assertCount(0, $newCharges);
 	
-    	$this->assertCount(0, $newCharges);
 	}
 }
