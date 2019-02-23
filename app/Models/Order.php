@@ -9,12 +9,13 @@ class Order extends Model
 {
     protected $guarded = [];
 
-    public static function forTickets($tickets, $email, $amount)
+    public static function forTickets($tickets, $email, $charge)
     {
         $order = self::create([
             'confirmation_number' => OrderConfirmationNumber::generate(),    
             'email' => $email,
-            'amount' => $amount,
+            'amount' => $charge->amount(),
+            'card_last_four' => $charge->cardLastFour(),
         ]);
 
         foreach ($tickets as $ticket) {
@@ -22,20 +23,6 @@ class Order extends Model
         }
 
         return $order;
-    }
-
-    public static function fromReservation($reservation)
-    {
-        $order = self::create([
-            'email' => $reservation->email(),
-            'amount' => $reservation->totalCost(),
-        ]);
-
-        foreach ($reservation->tickets() as $ticket) {
-            $order->tickets()->save($ticket);
-        }
-
-        return $order;   
     }
 
     public function tickets()
