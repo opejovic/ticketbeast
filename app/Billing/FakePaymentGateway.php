@@ -9,34 +9,42 @@ class FakePaymentGateway implements PaymentGateway
 {
 	private $charges;
   	private $beforeFirstChargeCallback;
+	private $tokens;
 
 	public function __construct()
 	{
 		$this->charges = collect();
+		$this->tokens = collect();
 	}
 
-	public function getValidTestToken()
+	public function getValidTestToken($cardNumber = '4242424242424242')
 	{
-		return "valid-token";
+		$token = 'test_tok'.str_random(24);
+		$this->tokens[$token] = $cardNumber;
+		return $token;
 	}
 
 	public function charge($amount, $token)
 	{
-	  if ($this->beforeFirstChargeCallback !== null) {
-		$callback = $this->beforeFirstChargeCallback;
-		$this->beforeFirstChargeCallback = null;
-		$callback($this);
-	  }
+		if ($this->beforeFirstChargeCallback !== null) {
+			$callback = $this->beforeFirstChargeCallback;
+			$this->beforeFirstChargeCallback = null;
+			$callback($this);
+		}
 
-	  if ($token !== $this->getValidTestToken()) {
-		throw new PaymentFailedException;
-	  }
-	  $this->charges[] = $amount;
+		if (! $this->tokens->has($token)) {
+			throw new PaymentFailedException;
+		}
+
+		return $this->charges[] = new Charge([
+			'amount' => $amount,
+			'card_last_four' => substr($this->tokens[$token], -4),
+		]);
 	}
 
 	public function totalCharges()
 	{
-		return $this->charges->sum();
+		return $this->charges->map->amount()->sum();
 	}
 
 	public function beforeFirstCharge($callback)
