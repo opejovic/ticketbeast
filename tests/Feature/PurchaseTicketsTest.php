@@ -19,7 +19,7 @@ class PurchaseTicketsTest extends TestCase
 {
 	use RefreshDatabase;
 
-	protected function setUp()
+	protected function setUp(): void
 	{
 		parent::setUp();
 	    $this->paymentGateway = new FakePaymentGateway;
