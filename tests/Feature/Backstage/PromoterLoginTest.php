@@ -1,6 +1,6 @@
 <?php
 
-namespace Tests\Feature;
+namespace Tests\Feature\Backstage;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -27,7 +27,7 @@ class PromoterLoginTest extends TestCase
             'password' => 'secret',
         ]);
 
-        $response->assertRedirect('/concerts/backstage');
+        $response->assertRedirect('/backstage/concerts/new');
         $this->assertTrue(Auth::check());
         $this->assertTrue(Auth::user()->is($user));
     }
@@ -59,6 +59,18 @@ class PromoterLoginTest extends TestCase
         ]);
 
         $response->assertSessionHasErrors('email');
+        $response->assertRedirect('/login');
+        $this->assertFalse(Auth::check());
+    }
+
+    /** @test */
+    function logging_out_the_current_user()
+    {
+        $this->withoutExceptionHandling();
+        Auth::login(factory(User::class)->create());
+
+        $response = $this->post('/logout');
+
         $response->assertRedirect('/login');
         $this->assertFalse(Auth::check());
     }

@@ -8,6 +8,11 @@ use Illuminate\Support\Facades\Auth;
 
 class LoginController extends Controller
 {
+    public function showLoginForm()
+    {
+        return view('auth.login');
+    }
+    
     public function login()
     {
         if (! Auth::attempt(request(['email', 'password']))) {
@@ -16,11 +21,13 @@ class LoginController extends Controller
             ]);
         }
 
-        return redirect('/backstage/concerts');
+        return redirect('/backstage/concerts/new');
     }
 
-    public function showLoginForm()
+    public function logout()
     {
-        return view('auth.login');
+        Auth::logout();
+
+        return redirect('/login');        
     }
 }
