@@ -44,9 +44,11 @@ class PromoterLoginTest extends TestCase
             'email' => 'wrongemail@example.com',
             'password' => 'incorrect-password',
         ]);
-
+     
         $response->assertSessionHasErrors('email');
         $response->assertRedirect('/login');
+        $this->assertFalse(session()->hasOldInput('password'));
+        $this->assertTrue(session()->hasOldInput('email'));
         $this->assertFalse(Auth::check());
     }    
 
