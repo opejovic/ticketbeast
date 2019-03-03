@@ -39,19 +39,18 @@ class ConcertsController extends Controller
     {
         $request->validate([
             'title'                  => ['required'],
-            'additional_information' => ['required'],
-            'date'                   => ['required'],
-            'time'                   => ['required'],
+            'date'                   => ['required', 'date'],
+            'time'                   => ['required', 'date_format:g:ia'],
             'venue'                  => ['required'],
             'venue_address'          => ['required'],
             'city'                   => ['required'],
             'state'                  => ['required'],
             'zip'                    => ['required'],
-            'ticket_price'           => ['required'],
-            'ticket_quantity'        => ['required'],
+            'ticket_price'           => ['required', 'numeric', 'min:5'],
+            'ticket_quantity'        => ['required', 'numeric', 'min:1'],
         ]);
 
-        $concert = Concert::create([
+        $concert = auth()->user()->concerts()->create([
             'title' => request('title'),
             'subtitle' => request('subtitle'),
             'date' => Carbon::parse(vsprintf('%s %s', [
