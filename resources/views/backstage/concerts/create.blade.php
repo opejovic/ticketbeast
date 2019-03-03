@@ -11,7 +11,7 @@
                 <div>
                     <form class="inline-block" action="{{ route('auth.logout') }}" method="POST">
                         {{ csrf_field() }}
-                        <button type="submit" class="link link-light">Log out</button>
+                        <button type="submit" class="link" style="color: white">Log out</button>
                     </form>
                 </div>
             </div>
