@@ -1,4 +1,4 @@
-@extends('layouts.master')
+{{-- @extends('layouts.master')
 
 @section('body')
 <header>
@@ -103,4 +103,4 @@
         <p class="text-center">&copy; TicketBeast {{ date('Y') }}</p>
     </div>
 </footer>
-@endsection
+@endsection --}}
