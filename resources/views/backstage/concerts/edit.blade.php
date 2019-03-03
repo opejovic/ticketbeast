@@ -24,7 +24,7 @@
         <h1 class="text-lg">Edit concert</h1>
     </div>
 </div>
-<form class="bg-soft p-xs-y-5" action="{{-- route('backstage.concerts.update', $concert) --}}" method="POST">
+<form class="bg-soft p-xs-y-5" action="{{ route('backstage.concerts.update', $concert) }}" method="POST">
     {{ csrf_field() }}
     {{ method_field('PATCH') }}
 

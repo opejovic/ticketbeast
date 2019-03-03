@@ -11,6 +11,11 @@ class Concert extends Model
     protected $guarded = [];
     protected $dates = ['date'];
 
+    public static function ownedByAuth($concert)
+    {
+        return Concert::where('user_id', auth()->id())->findOrFail($concert->id);
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -18,7 +23,7 @@ class Concert extends Model
 
     public function scopePublished($query)
     {
-    	return $query->whereNotNull('published_at');
+        return $query->whereNotNull('published_at');
     }
 
     public function isPublished()

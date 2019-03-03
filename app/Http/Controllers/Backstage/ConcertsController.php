@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Concert;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ConcertsController extends Controller
 {
@@ -90,7 +91,11 @@ class ConcertsController extends Controller
      */
     public function edit(Concert $concert)
     {
-        //
+        $concert = Auth::user()->concerts()->findOrFail($concert->id);
+
+        abort_if($concert->isPublished(), 403);
+
+        return view('backstage.concerts.edit', ['concert' => $concert]);
     }
 
     /**
