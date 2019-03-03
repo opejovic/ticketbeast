@@ -26,6 +26,11 @@ class Concert extends Model
     	return $this->published_at !== null;
     }
 
+    public function publish()
+    {
+        $this->update(['published_at' => $this->freshTimestamp()]);
+    }
+
     public function getFormattedDateAttribute()
     {
         return $this->date->format('F j, Y');
