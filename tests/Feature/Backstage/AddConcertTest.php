@@ -14,12 +14,6 @@ class AddConcertTest extends TestCase
 {
     use RefreshDatabase;
 
-    public function from($url)
-    {
-        session()->setPreviousUrl(url($url));
-        return $this;
-    }
-
     private function validParams($overrides = [])
     {
         return array_merge([
