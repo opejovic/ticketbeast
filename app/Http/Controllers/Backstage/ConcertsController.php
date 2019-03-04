@@ -117,7 +117,7 @@ class ConcertsController extends Controller
             'state'                  => ['required'],
             'zip'                    => ['required'],
             'ticket_price'           => ['required', 'numeric', 'min:4'],
-            // 'ticket_quantity'        => ['required', 'numeric', 'min:1'],
+            'ticket_quantity'        => ['required', 'numeric', 'min:1'],
         ]);
 
         $concert = Auth::user()->concerts()->findOrFail($concert->id);
@@ -132,6 +132,7 @@ class ConcertsController extends Controller
                 request('time')
             ])),
             'ticket_price' => request('ticket_price') * 100,
+            'ticket_quantity' => (int) request('ticket_quantity'),
             'venue' => request('venue'),
             'venue_address' => request('venue_address'),
             'city' => request('city'),
