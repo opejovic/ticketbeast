@@ -59,14 +59,15 @@ class ConcertsController extends Controller
                 request('time')
             ])),
             'ticket_price' => request('ticket_price') * 100,
+            'ticket_quantity' => (int) request('ticket_quantity'),
             'venue' => request('venue'),
             'venue_address' => request('venue_address'),
             'city' => request('city'),
             'state' => request('state'),
             'zip' => request('zip'),
             'additional_information' => request('additional_information'),
-        ])->addTickets(request('ticket_quantity'));
-
+        ]);
+        
         $concert->publish();
 
         return redirect()->route('concerts.show', $concert);
