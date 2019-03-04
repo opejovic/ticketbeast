@@ -11,14 +11,15 @@ $factory->define(App\Models\Concert::class, function (Faker $faker) {
         },
         'title' => 'The Fake Band Name',
     	'subtitle' => 'with The Fake Openers',
-    	'date' => Carbon::parse('+4 weeks'),
-    	'ticket_price' => 2000,
-    	'venue' => 'The Fake Venue',
-    	'venue_address' => '123 Example Lane',
-    	'city' => 'Fakerville',
-    	'state' => 'FV',
-    	'zip' => '123456',
-    	'additional_information' => 'Some sample additional information.',    
+        'additional_information' => 'Some sample additional information.',    
+        'date' => Carbon::parse('+4 weeks'),
+        'venue' => 'The Fake Venue',
+        'venue_address' => '123 Example Lane',
+        'city' => 'Fakerville',
+        'state' => 'FV',
+        'zip' => '123456',
+        'ticket_price' => 2000,
+    	'ticket_quantity' => 5,
     ];
 });
 
