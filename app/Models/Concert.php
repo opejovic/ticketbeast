@@ -88,6 +88,11 @@ class Concert extends Model
         return $this;
     }
 
+    public function ticketsSold()
+    {
+        return $this->tickets()->sold()->count();
+    }
+
     public function ticketsRemaining()
     {
         return $this->tickets()->available()->count();

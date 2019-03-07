@@ -132,8 +132,7 @@ class AddConcertTest extends TestCase
             ]));
 
         tap(Concert::first(), function ($concert) use ($response, $user) {
-            $response->assertStatus(302);
-            $response->assertRedirect("/concerts/{$concert->id}");
+            $response->assertRedirect('/backstage/concerts');
             $this->assertTrue($concert->user->is($user));
             $this->assertNull($concert->subtitle);
         });
@@ -150,9 +149,8 @@ class AddConcertTest extends TestCase
         ]));
 
         tap(Concert::first(), function ($concert) use ($response, $user) {
-            $response->assertStatus(302);
             $this->assertTrue($concert->user->is($user));
-            $response->assertRedirect("/concerts/{$concert->id}");
+            $response->assertRedirect('/backstage/concerts');
             $this->assertNull($concert->additional_information);
         });
     }
