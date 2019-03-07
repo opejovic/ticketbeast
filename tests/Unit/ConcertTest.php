@@ -113,6 +113,27 @@ class ConcertTest extends TestCase
 	}
 
 	/** @test */
+	function total_tickets_includes_all_tickets()
+	{
+	    $concert = factory(Concert::class)->create();
+	    $concert->tickets()->saveMany(factory(Ticket::class, 3)->create(['order_id' => 1]));
+	    $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => null]));
+	    
+	    $this->assertEquals(5, $concert->totalTickets());
+	}
+
+	/** @test */
+	function calculating_the_percentage_of_tickets_sold()
+	{
+	    $concert = factory(Concert::class)->create();
+	    $concert->tickets()->saveMany(factory(Ticket::class, 2)->create(['order_id' => 1]));
+	    $concert->tickets()->saveMany(factory(Ticket::class, 5)->create(['order_id' => null]));
+	    
+	    // $this->assertEquals(0.2857142, $concert->percentSoldOut(), '', 0.00001);
+	    $this->assertEquals(28.57, $concert->percentSoldOut());
+	}
+
+	/** @test */
 	function trying_to_reserve_more_tickets_than_remain_throws_an_Exception()
 	{
 	    $concert = factory(Concert::class)->create()->addTickets(10);
