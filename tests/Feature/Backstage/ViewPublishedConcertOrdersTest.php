@@ -3,7 +3,9 @@
 namespace Tests\Feature\Backstage;
 
 use App\Helpers\ConcertFactory;
+use App\Helpers\OrderFactory;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\TestResponse;
 use Illuminate\Foundation\Testing\WithFaker;
@@ -19,6 +21,12 @@ class ViewPublishedConcertOrdersTest extends TestCase
         $this->withoutExceptionHandling();
         $user = factory(User::class)->create();
         $concert = ConcertFactory::createPublished(['user_id' => $user->id]);
+
+        $order = OrderFactory::createForConcert($concert, ['created_at' => Carbon::parse('11 days ago')]);
+
+        $order = factory(Order::class)->create(['created_at' => Carbon::parse('11 days ago')]);
+        $ticket = factory(Tickets::class)->create(['order_id' => $concert->id]);
+        $order->tickets()->save($ticket);
 
         $response = $this->actingAs($user)->get("/backstage/published-concerts/{$concert->id}/orders");
 
