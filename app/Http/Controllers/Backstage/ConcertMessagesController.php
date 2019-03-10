@@ -33,6 +33,6 @@ class ConcertMessagesController extends Controller
     	return redirect()
     		->route('backstage.concert-messages.new',[
     			'concert' => $concert,
-    		])->with('flash', 'Your message has been successfully saved.');
+    		])->with('flash', 'Your message has been sent.');
     }
 }

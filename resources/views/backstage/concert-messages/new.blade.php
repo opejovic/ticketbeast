@@ -34,7 +34,7 @@
             @endif
 
             <div class="card p-xs-6">
-                <form action={{-- "{{ route('backstage.concert-messages.store', $concert) }}" --}} method="POST">
+                <form action="{{ route('backstage.concert-messages.store', $concert) }}" method="POST">
                     {{ csrf_field() }}
                     <div class="form-group {{ $errors->first('subject', 'has-error')}}">
                         <label class="form-label">Subject</label>
