@@ -36,17 +36,17 @@ class SendAttendeeMessageTest extends TestCase
 
 	 	SendAttendeeMessage::dispatch($message);
 	 	
-	 	Mail::assertSent(AttendeeMessageEmail::class, function ($mail) use ($message) {
+	 	Mail::assertQueued(AttendeeMessageEmail::class, function ($mail) use ($message) {
 	 		return $mail->hasTo('john@example.com')
 	 			&& $mail->attendeeMessage->is($message);
 	 	});
 
-	 	Mail::assertSent(AttendeeMessageEmail::class, function ($mail) use ($message) {
+	 	Mail::assertQueued(AttendeeMessageEmail::class, function ($mail) use ($message) {
 	 		return $mail->hasTo('jane@example.com')
 	 			&& $mail->attendeeMessage->is($message);
 	 	});
 
-	 	Mail::assertSent(AttendeeMessageEmail::class, function ($mail) use ($message) {
+	 	Mail::assertQueued(AttendeeMessageEmail::class, function ($mail) use ($message) {
 	 		return $mail->hasTo('jim@example.com')
 	 			&& $mail->attendeeMessage->is($message);
 	 	});
