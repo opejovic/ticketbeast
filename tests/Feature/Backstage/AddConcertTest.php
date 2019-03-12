@@ -7,7 +7,9 @@ use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Http\Testing\File;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AddConcertTest extends TestCase
@@ -295,12 +297,20 @@ class AddConcertTest extends TestCase
     {
         Storage::fake('s3');
         $user = factory(User::class)->create();
+        $file = File::image('concert-poster.png');
 
-        $response = $this->post('/backstage/concerts', $this->validParams([
-            'poster_image' => File::image('concert-poster.png'),
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => $file,
         ]));
 
-        $this->assertNotNull(Concert::first()->poster_image_path);
-        Storage::disk('s3')->assertExist(Concert::first()->poster_image_path);
+        tap(Concert::first(), function ($concert) use ($file) {
+            $this->assertNotNull($concert->poster_image_path);
+            Storage::disk('s3')->assertExists($concert->poster_image_path);
+
+            $this->assertFileEquals(
+                $file->getPathname(),
+                Storage::disk('s3')->path($concert->poster_image_path)
+            );
+        });
     }
 }
