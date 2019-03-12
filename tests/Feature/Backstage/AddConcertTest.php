@@ -289,4 +289,18 @@ class AddConcertTest extends TestCase
         $response->assertSessionHasErrors('ticket_quantity');
         $this->assertEquals(0, Concert::count());
     }
+
+    /** @test */
+    function poster_image_is_uploaded_if_included()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+
+        $response = $this->post('/backstage/concerts', $this->validParams([
+            'poster_image' => File::image('concert-poster.png'),
+        ]));
+
+        $this->assertNotNull(Concert::first()->poster_image_path);
+        Storage::disk('s3')->assertExist(Concert::first()->poster_image_path);
+    }
 }
