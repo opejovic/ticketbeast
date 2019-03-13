@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Backstage;
 
+use App\Helpers\NullFile;
 use App\Http\Controllers\Controller;
 use App\Models\Concert;
 use Carbon\Carbon;
@@ -77,7 +78,7 @@ class ConcertsController extends Controller
             'state' => request('state'),
             'zip' => request('zip'),
             'additional_information' => request('additional_information'),
-            'poster_image_path' => request('poster_image')->store('posters', 's3'),
+            'poster_image_path' => request('poster_image', new NullFile)->store('posters', 's3'),
         ]);
         
         return redirect()->route('backstage.concerts.index');
