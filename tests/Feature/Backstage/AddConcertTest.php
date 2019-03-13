@@ -297,12 +297,11 @@ class AddConcertTest extends TestCase
     {
         Storage::fake('s3');
         $user = factory(User::class)->create();
-        $file = File::image('concert-poster.png');
+        $file = File::image('concert-poster.png', 850, 1100);
 
         $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'poster_image' => $file,
         ]));
-
         tap(Concert::first(), function ($concert) use ($file) {
             $this->assertNotNull($concert->poster_image_path);
             Storage::disk('s3')->assertExists($concert->poster_image_path);
@@ -312,5 +311,59 @@ class AddConcertTest extends TestCase
                 Storage::disk('s3')->path($concert->poster_image_path)
             );
         });
+    }
+    
+    /** @test */
+    function poster_must_be_an_image()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::create('not-an-image.pdf');
+
+        $response = $this->actingAs($user)
+            ->from('/backstage/concerts/new')
+            ->post('/backstage/concerts', $this->validParams([
+                'poster_image' => $file,
+            ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    function poster_must_be_atleast_400px_wide()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::image('poster-image.png', 399, 516);
+
+        $response = $this->actingAs($user)
+            ->from('/backstage/concerts/new')
+            ->post('/backstage/concerts', $this->validParams([
+                'poster_image' => $file,
+            ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());   
+    }
+
+    /** @test */
+    function poster_image_must_be_have_aspect_ratio()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::image('poster-image.png', 851, 1100);
+
+        $response = $this->actingAs($user)
+            ->from('/backstage/concerts/new')
+            ->post('/backstage/concerts', $this->validParams([
+                'poster_image' => $file,
+            ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());   
     }
 }
