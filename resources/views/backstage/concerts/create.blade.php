@@ -1,30 +1,12 @@
-@extends('layouts.master')
+@extends('layouts.backstage')
 
-@section('body')
-<header>
-    <nav class="navbar p-xs-y-3">
-        <div class="container">
-            <div class="navbar-content">
-                <div>
-                    <img src="/img/logo.svg" alt="TicketBeast" style="height: 2.5rem;">
-                </div>
-                <div>
-                    <form class="inline-block" action="{{ route('auth.logout') }}" method="POST">
-                        {{ csrf_field() }}
-                        <button type="submit" class="link" style="color: white">Log out</button>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </nav>
-</header>
-
+@section('backstageContent')
 <div class="bg-light p-xs-y-4 border-b">
     <div class="container">
         <h1 class="text-lg">Add a concert</h1>
     </div>
 </div>
-<form class="bg-soft p-xs-y-5" action="/backstage/concerts" method="POST">
+<form class="bg-soft p-xs-y-5" action="/backstage/concerts" method="POST" enctype="multipart/form-data">
     {{ csrf_field() }}
 
     @if ($errors->any())
@@ -123,7 +105,7 @@
                                 <input name="venue" class="form-control" value="{{ old('venue') }}" placeholder="The Mosh Pit">
                             </div>
                             <div class="form-group {{ $errors->first('venue_address', 'has-error') }}">
-                                <label class="form-label">Stree Address</label>
+                                <label class="form-label">Street Address</label>
                                 <input name="venue_address" class="form-control" value="{{ old('venue_address') }}" placeholder="500 Example Ave.">
                             </div>
                             <div class="row">
@@ -182,6 +164,12 @@
                                         <input name="ticket_quantity" class="form-control" placeholder="250" value="{{ old('ticket_quantity') }}">
                                     </div>
                                 </div>
+                                <div class="col col-md6">
+                                    <div class="form-group {{ $errors->first('poster_image', 'has-error') }}">
+                                        <label class="form-label">Concert Poster</label>
+                                        <input type="file" name="poster_image" class="form-control" accept="image/*">
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -193,11 +181,4 @@
         <button type="submit" class="btn btn-primary">Add Concert</button>
     </div>
 </form>
-
-
-<footer class="p-xs-y-6 text-light-muted">
-    <div class="container">
-        <p class="text-center">&copy; TicketBeast {{ date('Y') }}</p>
-    </div>
-</footer>
 @endsection
