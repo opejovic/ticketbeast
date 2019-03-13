@@ -42,6 +42,11 @@ class Concert extends Model
         $this->addTickets($this->ticket_quantity);
     }
 
+    public function hasPoster()
+    {
+        return $this->poster_image_path !== null;
+    }
+
     public function getFormattedDateAttribute()
     {
         return $this->date->format('F j, Y');
