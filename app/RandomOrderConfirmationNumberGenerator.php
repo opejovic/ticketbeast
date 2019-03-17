@@ -4,7 +4,7 @@ namespace App;
 
 use App\OrderConfirmationNumberGenerator;
 
-class RandomOrderConfirmationNumberGenerator implements OrderConfirmationNumberGenerator
+class RandomOrderConfirmationNumberGenerator implements OrderConfirmationNumberGenerator, InvitationCodeGenerator
 {
     public function generate()
     {
