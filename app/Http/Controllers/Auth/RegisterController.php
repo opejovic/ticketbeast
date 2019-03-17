@@ -25,12 +25,13 @@ class RegisterController extends Controller
 
     public function register()
     {
-        $invitation = Invitation::findByCode(request('code'));
+        $invitation = Invitation::findByCode(request('invitation_code'));
+
+        abort_if($invitation->hasBeenUsed(), 404);
 
         $user = User::create([
             'email'    => request('email'),
             'password' => Hash::make(request('password')),
-            'code'     => request('code'),
         ]);
 
         $invitation->update(['user_id' => $user->id]);

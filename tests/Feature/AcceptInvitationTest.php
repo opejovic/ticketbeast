@@ -63,7 +63,7 @@ class AcceptInvitationTest extends TestCase
         $response = $this->post('/register', [
             'email' => 'john@example.com',
             'password' => 'secret',
-            'code' => 'TESTCODE1234',
+            'invitation_code' => 'TESTCODE1234',
         ]);
 
         $response->assertRedirect('/backstage/concerts');
@@ -74,5 +74,38 @@ class AcceptInvitationTest extends TestCase
         $this->assertTrue(Hash::check('secret', $user->password));
         $this->assertAuthenticatedAs($user);
         $this->assertTrue($invitation->fresh()->user->is($user));
+    }
+
+    /** @test */
+    function registering_with_a_used_invitation_code()
+    {
+        $invitation = factory(Invitation::class)->create([
+            'user_id' => factory(User::class)->create()->id,
+            'code' => 'TESTCODE1234',
+        ]);
+        $this->assertEquals(1, User::count());
+
+
+        $response = $this->post('/register', [
+            'email' => 'john@example.com',
+            'password' => 'secret',
+            'invitation_code' => 'TESTCODE1234',
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(1, User::count());
+    }
+
+    /** @test */
+    function registering_with_an_invitation_code_that_doesent_exist()
+    {
+        $response = $this->post('/register', [
+            'email' => 'john@example.com',
+            'password' => 'secret',
+            'invitation_code' => 'NONEXISTENTCODE',
+        ]);
+
+        $response->assertStatus(404);
+        $this->assertEquals(0, User::count());
     }
 }
