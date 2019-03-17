@@ -20,6 +20,7 @@ Route::post('/login', 'Auth\LoginController@login')->name('login');
 Route::post('/logout', 'Auth\LoginController@logout')->name('auth.logout');
 
 Route::get('/invitations/{code}', 'InvitationsController@show')->name('invitations.show');
+Route::post('/register', 'Auth\RegisterController@register')->name('auth.register');
 
 Route::group(['middleware' => 'auth', 'prefix' => 'backstage', 'namespace' => 'Backstage'], function () {
 	Route::get('/concerts', 'ConcertsController@index')->name('backstage.concerts.index');
@@ -30,9 +31,11 @@ Route::group(['middleware' => 'auth', 'prefix' => 'backstage', 'namespace' => 'B
 	Route::post('/published-concerts', 'PublishedConcertsController@store')->name('backstage.published-concerts.store');
 	
 	Route::get('/published-concerts/{concert}/orders', 'PublishedConcertOrdersController@index')
-		->name('backstage.published-concert-orders.index');
+		 ->name('backstage.published-concert-orders.index');
 	
-	Route::get('/concerts/{concert}/messages/new', 'ConcertMessagesController@create')->name('backstage.concert-messages.new');
-	Route::post('/concerts/{concert}/messages', 'ConcertMessagesController@store')->name('backstage.concert-messages.store');
+	Route::get('/concerts/{concert}/messages/new', 'ConcertMessagesController@create')
+		 ->name('backstage.concert-messages.new');
+	Route::post('/concerts/{concert}/messages', 'ConcertMessagesController@store')
+		 ->name('backstage.concert-messages.store');
 });
 
