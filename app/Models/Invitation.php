@@ -30,8 +30,8 @@ class Invitation extends Model
     	return $this->user_id !== null;
     }
 
-    // public function send()
-    // {
-    // 	Mail::to($this->email)->send(new InvitationEmail($this));
-    // }
+    public function send()
+    {
+    	Mail::to($this->email)->send(new InvitationEmail($this));
+    }
 }
